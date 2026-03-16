@@ -12,6 +12,7 @@ jobs:
 
   windows-echo:
     runs-on: windows-latest
+    shell: bash
     steps:
       - name: Show OS
         run: |
