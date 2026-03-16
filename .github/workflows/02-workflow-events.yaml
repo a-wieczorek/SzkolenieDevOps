@@ -3,7 +3,7 @@ on:
   pull_request:
   workflow_dispatch:
   schedule:
-    - cron: "32 14 * * *"
+    - cron: "32 13 * * *"
 jobs:
   echo:
     runs-on: ubuntu-latest
