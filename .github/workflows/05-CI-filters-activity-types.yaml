@@ -1,13 +1,13 @@
 name: CI
 on:
-  push:
-    branches: [ main ]
-    paths-ignore:
-      - '05-using-filters-and-activity-types/dokumentacja/**'
-  pull_request:
-    branches: [ main ]
-    paths-ignore:
-      - '05-using-filters-and-activity-types/dokumentacja/**'
+  # push:
+  #   branches: [ main ]
+  #   paths-ignore:
+  #     - '05-using-filters-and-activity-types/dokumentacja/**'
+  # pull_request:
+  #   branches: [ main ]
+  #   paths-ignore:
+  #     - '05-using-filters-and-activity-types/dokumentacja/**'
   workflow_dispatch:
 
 permissions:
