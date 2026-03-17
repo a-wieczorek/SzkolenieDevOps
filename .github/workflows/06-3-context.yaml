@@ -1,0 +1,24 @@
+name: 06 – 3 - Contexts
+on:
+  workflow_dispatch:
+    inputs:
+      city:
+        type: string
+        default: Warsaw
+run-name: 06 – Contexts | CITY – ${{ inputs.city }}
+
+env:
+  my_key: 7cff9972d5c98a9a47ddf6a59cb34d8e
+
+jobs:
+  fetch_weather:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch weather
+        run: ./06-context/pogoda/start.sh ${{ inputs.city }} ${{ env.my_key }} >> $GITHUB_STEP_SUMMARY
+
+      - name: Echo res
+        run: echo "$GITHUB_STEP_SUMMARY"
