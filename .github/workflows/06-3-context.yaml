@@ -17,7 +17,7 @@ jobs:
       - name: Fetch weather
         run:  | 
           chmod +x ./06-context/pogoda/start.sh
-          ./06-context/pogoda/start.sh ${{ inputs.city }} ${{ vars.weather_key }} >> $GITHUB_STEP_SUMMARY
+          bash ./06-context/pogoda/start.sh ${{ inputs.city }} ${{ vars.weather_key }} >> $GITHUB_STEP_SUMMARY
 
       - name: Echo res
         run: echo "$GITHUB_STEP_SUMMARY"
