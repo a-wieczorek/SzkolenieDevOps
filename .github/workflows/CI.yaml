@@ -1,0 +1,36 @@
+name: CI
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '05-using-filters-and-activity-types/dokumentacja/**'
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - '05-using-filters-and-activity-types/dokumentacja/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: 05-using-filters-and-activity-types/react-app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npn test -- --ci
