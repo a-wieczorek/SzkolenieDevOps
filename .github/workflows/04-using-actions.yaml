@@ -5,15 +5,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: 04-Using-Actions/react-app
+    # defaults:
+    #   run:
+    #     working-directory: 04-Using-Actions/react-app
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-
-      # - name: Printing Folders
-      #   run: ls -la
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -21,7 +18,11 @@ jobs:
           node-version: '20.x'
 
       - name: Install Dependencies
-        run: npm ci
+        run: |
+          pwd
+          ls -la
+          cd 04-using-actions/react-app
+          npm ci
 
       - name: Run Unit Tests
         run: npm run test
