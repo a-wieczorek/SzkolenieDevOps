@@ -34,3 +34,5 @@ jobs:
         run: |
           echo "This job is running on an self-hosted runner."
           echo "$RUNNER_OS"
+          ip a
+          echo "Ending" > test.txt
