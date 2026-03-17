@@ -1,11 +1,13 @@
 name: 04 - Using Actions
 on:
   push:
+
 jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
-      working-directory: 04-using-actions/react-app
+      run:
+        working-directory: 04-using-actions/react-app
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
