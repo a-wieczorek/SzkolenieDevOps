@@ -26,3 +26,11 @@ jobs:
         run: |
           echo "This job is running on an MacOS runner."
           echo "$RUNNER_OS"
+
+  self-hosted:
+    runs-on: self-hosted
+    steps:
+      - name: Show OS
+        run: |
+          echo "This job is running on an self-hosted runner."
+          echo "$RUNNER_OS"
