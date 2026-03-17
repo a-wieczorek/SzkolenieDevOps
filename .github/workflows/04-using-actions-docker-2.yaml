@@ -1,0 +1,93 @@
+name: 04 - Using Actions Docker - no actions
+
+on:
+  workflow_dispatch:
+
+# nie pozwala na 2 równoległe uruchomienia workflow
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: 04-using-actions-docker-app
+
+    env:
+      IMAGE_NAME: webapp
+      TAG: ${{ github.sha }}
+      HOST_PORT: 8080
+      CONTAINER_PORT: 80
+
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Check utils
+        run: |
+          set -euxo pipefail
+          docker --version
+          curl --version
+
+      - name: Build Docker image
+        run: |
+          set -euxo pipefail
+          docker build\
+            --pull \
+            --tag "${IMAGE_NAME}:${TAG}" \
+            .
+
+      - name: Cleanup container
+        run: |
+          set -euxo pipefail
+          # Jeśli kontener o tej nazwie już istnieje, zamknij go
+          docker ps -a --format '{{.Names}}' | grep -q "^${IMAGE_NAME}$" && docker rm -f "${IMAGE_NAME}" || true
+          # zwolnij port jeśli coś nasłuchuje
+          sudo fuser -k "${HOST_PORT}/tcp" || true
+
+      - name: Run container
+        run: |
+          set -euxo pipefail
+          docker run -d --name "${IMAGE_NAME}" -p "${HOST_PORT}:${CONTAINER_PORT}" "${IMAGE_NAME}:${TAG}"
+          docker ps
+
+      - name: Wait for Nginx to be ready
+        run: |
+          set -eux
+          for i in {1..30}; do
+            if curl -fsS http://localhost:8080/ >/dev/null; then
+              echo "Nginx odpowiada"; exit 0
+            fi
+            sleep 1
+          done
+          echo "Nginx nie wstał na czas" >&2
+          exit 1
+
+      - name: Test page content with curl
+        run: |
+          set -eux
+          BODY=$(curl -fsS http://localhost:8080/)
+          echo "----- PAGE BODY START -----"
+          echo "$BODY"
+          echo "------ PAGE BODY END ------"
+
+          echo "$BODY" | grep -qi "szkolenie github"
+
+      - name: Log dump (always)
+        if: always()
+        run: |
+          set +e
+          echo "---- docker logs ${IMAGE_NAME} ----"
+          docker logs "${IMAGE_NAME}" || true
+          echo "-----------------------------------"
+
+      - name: Cleanup (always)
+        if: always()
+        run: |
+          set -euxo pipefail
+          docker rm -f "${IMAGE_NAME}" || true
+          docker image rm "${IMAGE_NAME}:${TAG}" || true
