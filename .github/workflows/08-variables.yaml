@@ -47,7 +47,7 @@ jobs:
     steps:
       - name: Print Prod Variables
         run: |
-          echo "Org var: <tu pobierz wartość ORG_VAR>"
+          echo "Org var: $ORG_VAR>"
           echo "Org overwritten var: <tu pobierz wartość OVERWRITTEN_VAR>"
           echo "Repo var: <tu pobierz wartość REPOSITORY_VAR>"
           echo "Environment var: <tu pobierz wartość TARGET_VAR>"
