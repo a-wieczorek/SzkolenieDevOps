@@ -56,4 +56,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print Undefined Variables
-        run: echo "Org var: <tu pobierz wartość UNDEFINED_VAR_WITH_DEFAULT>"
+        run: |
+          echo "Org var: <tu pobierz wartość UNDEFINED_VAR_WITH_DEFAULT>"
